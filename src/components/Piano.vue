@@ -15,7 +15,7 @@
         &:hover { cursor: pointer; }
       }
 
-      .wkey { display: inline-block; width: 2.775%; height: 100%; margin: 0 auto; background:#fff; background:linear-gradient(-30deg,#f5f5f5,#fff); border:1px solid #ccc; box-shadow:inset 0 1px 0px #fff,inset 0 -1px 0px #fff,inset 1px 0px 0px #fff,inset -1px 0px 0px #fff,0 4px 3px rgba(0,0,0,0.7); border-radius: 0 0 5px 5px; position: relative;
+      .wkey { display: inline-block; width: 50px; height: 100%; margin: 0 auto; background:#fff; background:linear-gradient(-30deg,#f5f5f5,#fff); border:1px solid #ccc; box-shadow:inset 0 1px 0px #fff,inset 0 -1px 0px #fff,inset 1px 0px 0px #fff,inset -1px 0px 0px #fff,0 4px 3px rgba(0,0,0,0.7); border-radius: 0 0 5px 5px; position: relative;
 
         &:active { box-shadow:0 2px 2px rgba(0,0,0,0.4); top: -1%; height: 99%;  background:#efefef; }
         &:active:before { content:""; border-width:250px 5px 0px; border-style:solid; border-color:transparent transparent transparent rgba(0,0,0,0.1); position: absolute; left: 0; bottom: 0; }
@@ -90,14 +90,23 @@
           <img class="piano-band-img" :src="bandImg" alt="">
           <div class="piano-tip">⇧ 代表 shift 键</div>
         </div>
-        <div class="piano-key-wrap">
-          <div class="piano-key wkey" v-for="note in Notes" :key="note.keyCode" :data-keyCode="note.keyCode"
+        <div class="piano-key-wrap" 
+        style="display:flex;flex-wrap: wrap;
+        width:840px;
+        height:840px
+        ">
+          <div class="piano-key wkey" v-for="note in Notes" :key="note.keyCode" 
+          style="
+          width:120px;
+          height:120px
+          " :data-keyCode="note.keyCode"
             :data-name="note.name" v-if="note.type=='white'" @click.stop="clickPianoKey($event, note.keyCode)">
             <div class="keytip">
               <div class="keyname" v-show="showKeyName">{{note.key}}</div>
               <div class="notename" v-show="showNoteName">{{note.name}}</div>
             </div>
           </div>
+          <!--
           <div class="bkey-wrap bkey-wrap1">
             <div class="piano-key bkey" v-for="note in Notes" :key="note.keyCode" :data-keyCode="note.keyCode"
               :data-name="note.name" v-if="note.type=='black' && note.id >= 36 && note.id <= 40"
@@ -143,6 +152,7 @@
               </div>
             </div>
           </div>
+          -->
         </div>
       </div>
     </div>
@@ -196,7 +206,7 @@ export default {
       bandImg: require('../assets/images/band.png'),
       enableBlackKey: false, // 启用黑色按键
       showKeyName: true, // 显示键名
-      showNoteName: false, // 显示音符名
+      showNoteName: true, // 显示音符名
       Notes: Notes,
       synth: null,
       keydownTimer: null,
@@ -229,10 +239,10 @@ export default {
     },
     computeEleSize() {
       let wkey_width = $('.piano-key-wrap').width() / 36;
-      let wkey_height = wkey_width * 7;
-      let bkey_height = wkey_height * 0.7;
-      $('.piano-key-wrap').height(wkey_height);
-      $('.bkey').height(bkey_height);
+      let wkey_height = 50;
+      let bkey_height = 50;
+      // $('.piano-key-wrap').height(wkey_height);
+      // $('.bkey').height(bkey_height);
     },
     setListener() {
       window.onresize = this.computeEleSize

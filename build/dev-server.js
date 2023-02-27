@@ -10,10 +10,11 @@ var path = require('path')
 var express = require('express')
 var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
-var webpackConfig = require('./webpack.dev.conf')
+var webpackConfig = require('./webpack.dev.conf');
 
 // default port where dev server listens for incoming traffic
-var port = process.env.PORT || config.dev.port
+var port = 23277
+// process.env.PORT || config.dev.port
 // automatically open browser, if not set will be false
 var autoOpenBrowser = !!config.dev.autoOpenBrowser
 // Define HTTP proxies to your custom API backend
@@ -63,7 +64,7 @@ app.use(hotMiddleware)
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-var uri = 'http://localhost:' + port
+var uri = 'http://127.0.0.1:' + port
 
 var _resolve
 var readyPromise = new Promise(resolve => {
@@ -74,13 +75,13 @@ console.log('> Starting dev server...')
 devMiddleware.waitUntilValid(() => {
   console.log('> Listening at ' + uri + '\n')
   // when env is testing, don't need open it
-  if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
-    opn(uri)
-  }
-  _resolve()
+  // if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
+  //   opn(uri)
+  // }
+  // _resolve()
 })
 
-var server = app.listen(port)
+var server = app.listen(port, "0.0.0.0")
 
 module.exports = {
   ready: readyPromise,
