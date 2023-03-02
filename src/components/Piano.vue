@@ -186,18 +186,12 @@
 <script>
 import Vue from 'vue'
 import Tone from 'tone'
-import Observe from 'observe'
 import { Notes, OBEvent } from 'config'
 import SmapleLibrary from '@/lib/Tonejs-Instruments'
 import { debounce } from '@/lib/wutils'
 
-import pianoAutoPlayMixin from '@/mixins/pianoAutoPlayMixin'
-import xmlAutoPlayMixin from '@/mixins/xmlAutoPlayMixin'
-import midiAutoPlayMixin from '@/mixins/midiAutoPlayMixin'
-
 export default {
   name: 'Piano',
-  mixins: [pianoAutoPlayMixin, xmlAutoPlayMixin, midiAutoPlayMixin],
   components: {},
   data() {
     return {
@@ -247,31 +241,6 @@ export default {
     setListener() {
       window.onresize = this.computeEleSize
       window.onorientationchange = this.computeEleSize
-
-      // 数字简谱自动播放
-      Observe.$on(OBEvent.AUTO_PLAY_NUM_SCORE, (scorename) => {
-        this.playScoreByName(scorename)
-      })
-      // XML乐谱自动播放
-      Observe.$on(OBEvent.AUTO_PLAY_XML_SCORE, (musicScore) => {
-        this.addToPlayQueue(musicScore)
-        // try {
-        //   this.playXMLScore(musicScore)
-        // } catch (e) {
-        //   console.log(e)
-        // }
-      })
-      // MIDI 自动播放
-      Observe.$on(OBEvent.AUTO_PLAY_MIDI, (midiUrl) => {
-        this.loadMidiAndPlay(midiUrl)
-      })
-      // 暂停自动播放
-      Observe.$on(OBEvent.STOP_AUTO_PLAY, (scoreItem) => {
-        this.pauseAutoPlay(scoreItem)
-        this.pauseXMLPlay()
-        this.pauseXMLPlay()
-        this.stopMidiPlay()
-      })
     },
     getNoteByKeyCode(keyCode) {
       // 改为更高性能的写法
